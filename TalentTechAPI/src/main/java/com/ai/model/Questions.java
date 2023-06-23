@@ -1,5 +1,7 @@
 package com.ai.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,5 +29,6 @@ public class Questions {
 	private String type;
 	
 	@OneToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Interview interview;
 }
