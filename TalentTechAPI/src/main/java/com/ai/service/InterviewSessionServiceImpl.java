@@ -1,5 +1,6 @@
 package com.ai.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,25 @@ public class InterviewSessionServiceImpl implements InterviewSessionService{
 		InterviewSession createSession = new InterviewSession();
 		
 		createSession.setCustomer(cus.get());
+		createSession.setDate(LocalDateTime.now());
+		
+		interviewSessionRepository.save(createSession);
 		
 		return createSession;
 	}
+
+	@Override
+	public InterviewSession addSession(InterviewSession customer) {
+		
+		if(customer == null) throw new CustomerException("Invalid Detailes");
+		
+		Optional<Customer> cus= customerRepository.findById(customer.getSessionId());
+		
+		if(cus.isPresent()) throw new CustomerException("Customer is already present in the database");
+		
+		return interviewSessionRepository.save(customer);
+//		return null;
+	}
+	
 
 }
