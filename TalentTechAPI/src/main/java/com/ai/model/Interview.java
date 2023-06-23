@@ -1,5 +1,7 @@
 package com.ai.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,6 +30,7 @@ public class Interview {
 	private String chatGptAns;
 	
 	@ManyToOne
+	@JsonIgnore
 	private InterviewSession interviewSession;
 	
 //	@JoinColumn(name= "interview_id")

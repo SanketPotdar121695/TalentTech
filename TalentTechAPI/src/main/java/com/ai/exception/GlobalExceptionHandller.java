@@ -37,4 +37,13 @@ public class GlobalExceptionHandller {
         error.setDateTime(LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    
+    @ExceptionHandler(CustomerException.class)
+    public ResponseEntity<APIError> customerExceptionHandller(WebRequest wr, CustomerException e) {
+        APIError error = new APIError();
+        error.setDesc(wr.getDescription(false));
+        error.setMessege(e.getLocalizedMessage());
+        error.setDateTime(LocalDateTime.now());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
