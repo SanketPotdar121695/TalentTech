@@ -32,7 +32,7 @@ public class InterviewSession {
 	
 	private LocalDateTime date;
 	
-	private String videoRec;
+	private String videoRec; 
 	
 	@ManyToOne
 	@JsonIgnore
