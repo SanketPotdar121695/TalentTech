@@ -5,9 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.ai.model.Customer;
 
+import java.util.Optional;
+
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
-	public Customer findByEmail(String email);
+	public Optional<Customer> findByEmail(String email);
 	
 }

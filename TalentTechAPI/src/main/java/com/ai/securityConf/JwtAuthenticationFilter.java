@@ -2,7 +2,6 @@ package com.ai.securityConf;
 
 import java.io.IOException;
 
-import com.amusement.service.CustomerUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
