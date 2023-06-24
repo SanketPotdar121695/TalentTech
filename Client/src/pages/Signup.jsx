@@ -1,6 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
+import instance from '../utils/axiosInstance';
 
 const initState = {
   firstname: '',
@@ -13,7 +15,7 @@ const Signup = () => {
   const [userData, setUserData] = React.useState(initState);
   const [cPass, setCPass] = React.useState('');
   const toast = useToast();
-  const passwordInputRef = React.useRef(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,113 +26,48 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let isEmpty = false;
-    console.log(passwordInputRef.current.validity);
-
-    Object.keys(userData).map((key) => {
-      if (userData[key].length === 0) {
-        isEmpty = true;
-      }
-      return key;
-    });
-
-    if (isEmpty) {
+    if (userData.password !== cPass) {
       return toast({
-        title: 'Registration failed.',
-        description: 'Please fill out the necessary information.',
+        title: 'Registration failed!',
+        description:
+          "Please insert the correct password in the 'Confirm Password' field.",
         status: 'warning',
         duration: 5000
       });
     } else {
-      let password = passwordInputRef.current.value;
-      let message = '';
-      passwordInputRef.current.setCustomValidity(message);
-
-      if (password.length < 8) {
-        message = 'Password should be atleast 8 characters long.';
-      } else {
-        let nums = false;
-        let splChars = false;
-        let upperChars = false;
-
-        for (let i = 0; i < password.length; i++) {
-          if (password.charCodeAt(i) >= 33 && password.charCodeAt(i) <= 64) {
-            isNaN(password[i]) ? (splChars = true) : (nums = true);
-          } else if (
-            password.charCodeAt(i) >= 65 &&
-            password.charCodeAt(i) <= 90
-          ) {
-            upperChars = true;
-          }
-        }
-
-        // if (!nums || !splChars || !upperChars) {
-        //   message =
-        //     'Password should contain atleast one uppercase character, one number & a special character.';
-        // }
-      }
-
-      passwordInputRef.current.setCustomValidity(message);
-      passwordInputRef.current.reportValidity();
-
-      if (message.length) {
-        return toast({
-          title: 'Registration failed.',
-          status: 'warning',
-          duration: 5000
+      instance
+        .post('/users/register', userData)
+        .then((res) => {
+          toast({
+            title: res.data.message,
+            status: 'success',
+            duration: 5000
+          });
+          navigate('/login');
+        })
+        .catch((err) => {
+          return toast({
+            title: err.response.data.error,
+            description: err.response.data.description,
+            status: 'warning',
+            duration: 5000
+          });
         });
-      } else {
-        return toast({
-          title: 'Registration successful.',
-          status: 'success',
-          duration: 5000
-        });
-      }
     }
   };
-
-  // const handleInvalidPass = (e) => {
-  //   let password = passwordInputRef.target.value;
-  //   let message = '';
-
-  //   if (password.length < 8) {
-  //     message = 'Password should be atleast 8 characters long.';
-  //   } else {
-  //     let nums = false;
-  //     let splChars = false;
-  //     let upperChars = false;
-
-  //     for (let i = 0; i < password.length; i++) {
-  //       if (password.charCodeAt(i) >= 33 && password.charCodeAt(i) <= 64) {
-  //         isNaN(password[i]) ? (splChars = true) : (nums = true);
-  //       } else if (
-  //         password.charCodeAt(i) >= 65 &&
-  //         password.charCodeAt(i) <= 90
-  //       ) {
-  //         upperChars = true;
-  //       }
-  //     }
-
-  //     if (!nums || !splChars || !upperChars) {
-  //       message =
-  //         'Password should contain atleast one uppercase character, one number & a special character.';
-  //     }
-  //   }
-
-  //   e.target.setCustomValidity(message);
-  //   e.target.reportValidity();
-  // };
 
   const { firstname, lastname, email, password } = userData;
 
   return (
     <div className='flex min-h-full flex-1 bg-indigo-200 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <img
-          className='mx-auto h-10 w-auto'
-          src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-          alt='Your Company'
-        />
+        <NavLink to='/'>
+          <img
+            className='mx-auto h-10 w-auto'
+            src={logo}
+            alt='TalentTech-logo'
+          />
+        </NavLink>
         <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
           Create a new account
         </h2>
@@ -215,7 +152,6 @@ const Signup = () => {
                 name='password'
                 type='password'
                 password={password}
-                ref={passwordInputRef}
                 autoComplete='current-password'
                 onChange={handleChange}
                 required
