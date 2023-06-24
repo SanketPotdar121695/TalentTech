@@ -1,4 +1,4 @@
-package com.amusement.model;
+package com.ai.model;
 
 import lombok.Builder;
 import lombok.Data;

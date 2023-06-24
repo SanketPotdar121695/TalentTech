@@ -1,4 +1,4 @@
-package com.amusement.securityConf;
+package com.ai.securityConf;
 
 import java.io.IOException;
 
