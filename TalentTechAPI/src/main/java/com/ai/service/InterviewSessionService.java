@@ -6,4 +6,6 @@ public interface InterviewSessionService {
 
 	public InterviewSession addInterviewSession(Integer customerId);
 	
+	public InterviewSession addSession(InterviewSession customer);
+	
 }
