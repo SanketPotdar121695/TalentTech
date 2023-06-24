@@ -27,6 +27,8 @@ public class Interview {
 		
 	private String userAns;
 	
+	private Integer questionId;
+	
 	private String chatGptAns;
 	
 	@ManyToOne
