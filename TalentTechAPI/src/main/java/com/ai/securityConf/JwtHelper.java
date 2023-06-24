@@ -1,4 +1,4 @@
-package com.amusement.securityConf;
+package com.ai.securityConf;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +18,7 @@ public class JwtHelper {
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     //    public static final long JWT_TOKEN_VALIDITY =  60;
-    private String secret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
+    private final String secret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {

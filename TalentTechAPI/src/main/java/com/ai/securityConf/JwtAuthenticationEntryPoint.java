@@ -1,4 +1,4 @@
-package com.amusement.securityConf;
+package com.ai.securityConf;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
