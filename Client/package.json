@@ -50,8 +50,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": ".",
   "devDependencies": {
     "tailwindcss": "^3.3.2"
-  }
+  },
+  "homepage": "."
 }
