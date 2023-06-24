@@ -1,22 +1,75 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import { login } from '../redux/auth/auth.actions';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../utils/Loading';
+import { useToast } from '@chakra-ui/react';
+
+const initState = {
+  email: '',
+  password: ''
+};
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const { loading, error, isAuth } = useSelector((store) => store.authReducer);
+  const [userData, setUserData] = React.useState(initState);
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const inputValue = value;
+    setUserData({ ...userData, [name]: inputValue });
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(login(userData));
+  };
+
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        title: error.error,
+        description: error.description,
+        status: 'warning',
+        duration: 5000
+      });
+    }
+
+    if (isAuth) {
+      toast({
+        title: 'Login Sussessful!',
+        status: 'success',
+        duration: 5000
+      });
+      navigate('/');
+    }
+  }, [loading, error, isAuth]);
+
+  if (loading) return <Loading />;
+
+  const { email, password } = userData;
+
   return (
     <div className='flex min-h-full flex-1 bg-indigo-200 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <img
-          className='mx-auto h-10 w-auto'
-          src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-          alt='Your Company'
-        />
+        <NavLink to='/'>
+          <img
+            className='mx-auto h-10 w-auto'
+            src={logo}
+            alt='TalentTech-logo'
+          />
+        </NavLink>
         <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
           Sign in to your account
         </h2>
       </div>
 
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-        <form className='space-y-6' method='POST'>
+        <form className='space-y-6' onSubmit={handleLogin}>
           <div>
             <label
               htmlFor='email'
@@ -30,6 +83,8 @@ const Login = () => {
                 name='email'
                 type='email'
                 autoComplete='email'
+                value={email}
+                onChange={handleChange}
                 required
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
@@ -55,6 +110,8 @@ const Login = () => {
                 id='password'
                 name='password'
                 type='password'
+                value={password}
+                onChange={handleChange}
                 autoComplete='current-password'
                 required
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
