@@ -3,7 +3,7 @@ import * as types from './auth.types';
 
 let userData = Cookies.get('userDetails');
 let token = Cookies.get('token') || '';
-userData = userData.length ? JSON.parse(userData) : {};
+userData = userData?.length ? JSON.parse(userData) : {};
 
 const initState = {
   loading: false,
